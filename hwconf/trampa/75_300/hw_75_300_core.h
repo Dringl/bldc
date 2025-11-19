@@ -74,18 +74,18 @@
 /*
  * ADC Vector
  *
- * 0  (1):	IN0		SENS1
- * 1  (2):	IN1		SENS2
- * 2  (3):	IN2		SENS3
- * 3  (1):	IN10	CURR1
- * 4  (2):	IN11	CURR2
- * 5  (3):	IN12	CURR3
+ * 0  (1):	IN0		SENS1  电压U
+ * 1  (2):	IN1		SENS2  电压V
+ * 2  (3):	IN2		SENS3  电压W
+ * 3  (1):	IN10	CURR1  CUR_U
+ * 4  (2):	IN11	CURR2  CUR_V
+ * 5  (3):	IN12	CURR3  CUR_W
  * 6  (1):	IN5		ADC_EXT1
  * 7  (2):	IN6		ADC_EXT2
- * 8  (3):	IN3		TEMP_MOS
+ * 8  (3):	IN3		TEMP_MOS  MOS温度采集
  * 9  (1):	IN14	TEMP_MOTOR
  * 10 (2):	IN15	ADC_EXT3
- * 11 (3):	IN13	AN_IN
+ * 11 (3):	IN13	AN_IN     电池电压
  * 12 (1):	Vrefint
  * 13 (2):	IN0		SENS1
  * 14 (3):	IN1		SENS2
@@ -99,12 +99,12 @@
 #define HW_ADC_NBR_CONV			6
 
 // ADC Indexes
-#define ADC_IND_SENS1			3
-#define ADC_IND_SENS2			4
-#define ADC_IND_SENS3			5
-#define ADC_IND_CURR1			0
-#define ADC_IND_CURR2			1
-#define ADC_IND_CURR3			2
+#define ADC_IND_SENS1			0
+#define ADC_IND_SENS2			1
+#define ADC_IND_SENS3			2
+#define ADC_IND_CURR1			3
+#define ADC_IND_CURR2			4
+#define ADC_IND_CURR3			5
 #define ADC_IND_VIN_SENS		11
 #define ADC_IND_EXT				6
 #define ADC_IND_EXT2			7
@@ -125,7 +125,7 @@
 
 // Component parameters (can be overridden)
 #ifndef V_REG
-#define V_REG					3.44
+#define V_REG					3.3
 #endif
 #ifndef VIN_R1
 #define VIN_R1					56000.0
@@ -136,8 +136,9 @@
 #ifndef CURRENT_AMP_GAIN
 #define CURRENT_AMP_GAIN		20.0
 #endif
+//#define CURRENT_SHUNT_RES		(0.0005 / 3.0)
 #ifndef CURRENT_SHUNT_RES
-#define CURRENT_SHUNT_RES		(0.0005 / 3.0)
+#define CURRENT_SHUNT_RES		0.0005
 #endif
 
 // Input voltage

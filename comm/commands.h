@@ -23,35 +23,35 @@
 #include "datatypes.h"
 
 // Functions
-void commands_init(void);
-bool commands_is_initialized(void);
-void commands_send_packet(unsigned char *data, unsigned int len);
-void commands_send_packet_can_last(unsigned char *data, unsigned int len);
-void commands_send_packet_nrf(unsigned char *data, unsigned int len);
-void commands_send_packet_last_blocking(unsigned char *data, unsigned int len);
-void commands_unregister_reply_func(void(*reply_func)(unsigned char *data, unsigned int len));
+void commands_init(void); //初始化命令
+bool commands_is_initialized(void);  //命令是否初始化
+void commands_send_packet(unsigned char *data, unsigned int len);//发送数据包
+void commands_send_packet_can_last(unsigned char *data, unsigned int len);//通过CAN发送数据包
+void commands_send_packet_nrf(unsigned char *data, unsigned int len);//通过NRF2.4G发送数据包
+void commands_send_packet_last_blocking(unsigned char *data, unsigned int len);//阻塞方式发送数据包
+void commands_unregister_reply_func(void(*reply_func)(unsigned char *data, unsigned int len));//注册函数取消
 void commands_process_packet(unsigned char *data, unsigned int len,
-		void(*reply_func)(unsigned char *data, unsigned int len));
-int commands_printf(const char* format, ...);
-int commands_printf_lisp(const char* format, ...);
-void commands_send_rotor_pos(float rotor_pos);
+		void(*reply_func)(unsigned char *data, unsigned int len));//数据包处理
+int commands_printf(const char* format, ...);       //打印函数
+int commands_printf_lisp(const char* format, ...); //LISP打印函数
+void commands_send_rotor_pos(float rotor_pos);  //具体位置发送
 void commands_send_experiment_samples(float *samples, int len);
 void commands_fwd_can_frame(int len, unsigned char *data, uint32_t id, bool is_extended);
 disp_pos_mode commands_get_disp_pos_mode(void);
-bool commands_set_app_data_handler(void(*func)(unsigned char *data, unsigned int len));
-void commands_set_hw_data_handler(void(*func)(unsigned char *data, unsigned int len));
-void commands_send_app_data(unsigned char *data, unsigned int len);
-void commands_send_hw_data(unsigned char *data, unsigned int len);
-void commands_send_gpd_buffer_notify(void);
+bool commands_set_app_data_handler(void(*func)(unsigned char *data, unsigned int len));//设置应用数据处理程序
+void commands_set_hw_data_handler(void(*func)(unsigned char *data, unsigned int len));//设置硬件数据处理程序
+void commands_send_app_data(unsigned char *data, unsigned int len);//发送应用数据
+void commands_send_hw_data(unsigned char *data, unsigned int len);//发送硬件数据
+void commands_send_gpd_buffer_notify(void);//发送GPD缓冲区通知
 void commands_send_mcconf(COMM_PACKET_ID packet_id, mc_configuration* mcconf,
-    void(*reply_func)(unsigned char* data, unsigned int len));
+    void(*reply_func)(unsigned char* data, unsigned int len));//发送MC配置
 void commands_send_appconf(COMM_PACKET_ID packet_id, app_configuration* appconf,
-    void(*reply_func)(unsigned char* data, unsigned int len));
+    void(*reply_func)(unsigned char* data, unsigned int len));//发送应用配置
 void commands_apply_mcconf_hw_limits(mc_configuration *mcconf);
-void commands_init_plot(const char *namex, const char *namey);
-void commands_plot_add_graph(const char *name);
-void commands_plot_set_graph(int graph);
-void commands_send_plot_points(float x, float y);
-int commands_get_fw_version_sent_cnt(void);
+void commands_init_plot(const char *namex, const char *namey);//画图初始化
+void commands_plot_add_graph(const char *name);//添加图形
+void commands_plot_set_graph(int graph);//设置图形
+void commands_send_plot_points(float x, float y);//发送绘图点
+int commands_get_fw_version_sent_cnt(void);//获取固件版本发送计数
 
 #endif /* COMMANDS_H_ */

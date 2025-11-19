@@ -246,16 +246,16 @@ typedef struct {
 
 // Functions
 void foc_observer_update(float v_alpha, float v_beta, float i_alpha, float i_beta,
-		float dt, observer_state *state, float *phase, motor_all_state_t *motor);
+		float dt, observer_state *state, float *phase, motor_all_state_t *motor); //磁链观测器
 void foc_pll_run(float phase, float dt, float *phase_var,
-		float *speed_var, mc_configuration *conf);
+		float *speed_var, mc_configuration *conf);   //PLL锁相环
 void foc_svm(float alpha, float beta, float max_mod, uint32_t PWMFullDutyCycle,
-		uint32_t* tAout, uint32_t* tBout, uint32_t* tCout, uint32_t *svm_sector);
-void foc_run_pid_control_pos(bool index_found, float dt, motor_all_state_t *motor);
-void foc_run_pid_control_speed(bool index_found, float dt, motor_all_state_t *motor);
-float foc_correct_encoder(float obs_angle, float enc_angle, float speed, float sl_erpm, motor_all_state_t *motor);
-float foc_correct_hall(float angle, float dt, motor_all_state_t *motor, int hall_val);
-void foc_run_fw(motor_all_state_t *motor, float dt);
+		uint32_t* tAout, uint32_t* tBout, uint32_t* tCout, uint32_t *svm_sector); //SVM空间矢量调制
+void foc_run_pid_control_pos(bool index_found, float dt, motor_all_state_t *motor);//位置PID控制
+void foc_run_pid_control_speed(bool index_found, float dt, motor_all_state_t *motor);//速度PID控制
+float foc_correct_encoder(float obs_angle, float enc_angle, float speed, float sl_erpm, motor_all_state_t *motor);//编码器校正
+float foc_correct_hall(float angle, float dt, motor_all_state_t *motor, int hall_val);//霍尔校正
+void foc_run_fw(motor_all_state_t *motor, float dt);//
 void foc_hfi_adjust_angle(float ang_err, motor_all_state_t *motor, float dt);
 void foc_precalc_values(motor_all_state_t *motor);
 

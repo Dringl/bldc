@@ -690,7 +690,7 @@ void commands_process_packet(unsigned char *data, unsigned int len,
 		mc_interface_sample_print_data(mode, sample_len, decimation, raw, send_func);
 	} break;
 
-	case COMM_REBOOT:
+	case COMM_REBOOT:  //重启命令
 		conf_general_store_backup_data();
 		NVIC_SystemReset();
 		break;
@@ -700,7 +700,7 @@ void commands_process_packet(unsigned char *data, unsigned int len,
 		timeout_reset();
 		break;
 
-	case COMM_GET_DECODED_PPM: {
+	case COMM_GET_DECODED_PPM: {  //脉冲控制
 		int32_t ind = 0;
 		uint8_t send_buffer[50];
 		send_buffer[ind++] = COMM_GET_DECODED_PPM;
@@ -709,7 +709,7 @@ void commands_process_packet(unsigned char *data, unsigned int len,
 		reply_func(send_buffer, ind);
 	} break;
 
-	case COMM_GET_DECODED_ADC: {
+	case COMM_GET_DECODED_ADC: {  //ADC控制
 		int32_t ind = 0;
 		uint8_t send_buffer[50];
 		send_buffer[ind++] = COMM_GET_DECODED_ADC;
@@ -887,13 +887,13 @@ void commands_process_packet(unsigned char *data, unsigned int len,
 		mempools_free_packet_buffer(send_buffer);
 	    } break;
 
-	case COMM_SET_ODOMETER: {
+	case COMM_SET_ODOMETER: {  //里程计
 		int32_t ind = 0;
 		mc_interface_set_odometer(buffer_get_uint32(data, &ind));
 		timeout_reset();
 	} break;
 
-	case COMM_SET_MCCONF_TEMP:
+	case COMM_SET_MCCONF_TEMP:  
 	case COMM_SET_MCCONF_TEMP_SETUP: {
 		mc_configuration *mcconf = mempools_alloc_mcconf();
 		*mcconf = *mc_interface_get_configuration();

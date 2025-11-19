@@ -24,7 +24,7 @@
 // See http://cas.ensmp.fr/~praly/Telechargement/Journaux/2010-IEEE_TPEL-Lee-Hong-Nam-Ortega-Praly-Astolfi.pdf
 void foc_observer_update(float v_alpha, float v_beta, float i_alpha, float i_beta,
 		float dt, observer_state *state, float *phase, motor_all_state_t *motor) {
-
+		//alpha电压 beta电压  alpha电流 beta电流  时间间隔  观测器状态  相位  电机状态
 	mc_configuration *conf_now = motor->m_conf;
 
 	float R = conf_now->foc_motor_r;
@@ -67,10 +67,10 @@ void foc_observer_update(float v_alpha, float v_beta, float i_alpha, float i_bet
 
 	// Temperature compensation
 	if (conf_now->foc_temp_comp) {
-		R = motor->m_res_temp_comp;
+		R = motor->m_res_temp_comp; //温度补偿后的电阻
 	}
 
-	float ld_lq_diff = conf_now->foc_motor_ld_lq_diff;
+	float ld_lq_diff = conf_now->foc_motor_ld_lq_diff; //电机的LD和LQ差值
 	float id = motor->m_motor_state.id;
 	float iq = motor->m_motor_state.iq;
 

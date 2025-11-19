@@ -251,8 +251,8 @@ uint32_t main_calc_hw_crc(void) {
 }
 
 int main(void) {
-	halInit();
-	chSysInit();
+	halInit();  //硬件抽象层初始化
+	chSysInit(); //操作系统内核初始化
 
 	// Initialize the enable pins here and disable them
 	// to avoid excessive current draw at boot because of
@@ -268,14 +268,14 @@ int main(void) {
 	palClearPad(BOOT_OK_GPIO, BOOT_OK_PIN);
 #endif
 
-	chThdSleepMilliseconds(100);
+	chThdSleepMilliseconds(100);   //延迟100ms
 
-	mempools_init();
-	events_init();
-	timer_init(); // Initialize timer here to allow I2C in hw_init
-	hw_init_gpio();
-	LED_RED_OFF();
-	LED_GREEN_OFF();
+	mempools_init();	//内存池初始化
+	events_init();	//事件子系统初始化
+	timer_init(); // Initialize time here to allow I2C in hw_init 
+	hw_init_gpio();	//硬件GPIO初始化
+	LED_RED_OFF();	//关闭红色LED
+	LED_GREEN_OFF();	//关闭绿色LED
 
 	conf_general_init();
 
@@ -289,16 +289,16 @@ int main(void) {
 		}
 	}
 
-	ledpwm_init();
-	mc_interface_init();
+	ledpwm_init();  //呼吸灯PWM初始化
+	mc_interface_init();  //VESC支持FOC、BLDC等多种电机控制方式的初始化
 
-	commands_init();
+	commands_init();  //执行外部命令初始化
 
 #if COMM_USE_USB
-	comm_usb_init();
+	comm_usb_init();	//跟PC上危机通信，USB通信初始化
 #endif
 
-	app_uartcomm_initialize();
+	app_uartcomm_initialize();  //手机APP串口通信初始化
 	app_configuration *appconf = mempools_alloc_appconf();
 	conf_general_read_app_configuration(appconf);
 	app_uartcomm_start(UART_PORT_BUILTIN);
@@ -310,7 +310,7 @@ int main(void) {
 	comm_can_init();
 #endif
 
-#ifdef HW_HAS_PERMANENT_NRF
+#ifdef HW_HAS_PERMANENT_NRF   //NRF 2.4G无线模块初始化
 	conf_general_permanent_nrf_found = nrf_driver_init();
 	if (conf_general_permanent_nrf_found) {
 		rfhelp_restart();
@@ -327,12 +327,12 @@ int main(void) {
 	}
 #endif
 
-	// Threads
-	chThdCreateStatic(led_thread_wa, sizeof(led_thread_wa), NORMALPRIO, led_thread, NULL);
-	chThdCreateStatic(periodic_thread_wa, sizeof(periodic_thread_wa), NORMALPRIO, periodic_thread, NULL);
+	// Threads  //初始化线程
+	chThdCreateStatic(led_thread_wa, sizeof(led_thread_wa), NORMALPRIO, led_thread, NULL);	//LED指示灯线程
+	chThdCreateStatic(periodic_thread_wa, sizeof(periodic_thread_wa), NORMALPRIO, periodic_thread, NULL); //周期线程
 	chThdCreateStatic(flash_integrity_check_thread_wa, sizeof(flash_integrity_check_thread_wa), LOWPRIO, flash_integrity_check_thread, NULL);
 
-	timeout_init();
+	timeout_init();  //看门狗初始化
 	timeout_configure(appconf->timeout_msec, appconf->timeout_brake_current, appconf->kill_sw_mode);
 
 #if HAS_BLACKMAGIC
@@ -341,7 +341,7 @@ int main(void) {
 
 	shutdown_init();
 
-	imu_reset_orientation();
+	imu_reset_orientation();  //IMU传感器初始化
 
 	chThdSleepMilliseconds(500);
 	m_init_done = true;
@@ -363,11 +363,11 @@ int main(void) {
 	mempools_free_appconf(appconf);
 
 	for(;;) {
-		chThdSleepMilliseconds(10);
+		chThdSleepMilliseconds(10);  //进入死循环，线程调度器会调度各个线程运行
 	}
 }
 
-void main_stop_motor_and_reset(void) {
+void main_stop_motor_and_reset(void) { //停止电机并复位
 	TIM_SelectOCxM(TIM1, TIM_Channel_1, TIM_ForcedAction_InActive);
 	TIM_CCxCmd(TIM1, TIM_Channel_1, TIM_CCx_Enable);
 	TIM_CCxNCmd(TIM1, TIM_Channel_1, TIM_CCxN_Disable);
